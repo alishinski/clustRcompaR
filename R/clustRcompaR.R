@@ -168,5 +168,5 @@ cluster <- function(mat, dev_mat){
 #' @details Comparing function
 #' @export
 compare <- function(){
-
+  # Compare specified groups based on cluster frequencies
 }
