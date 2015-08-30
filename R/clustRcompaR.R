@@ -64,8 +64,8 @@ assemble_corpus <- function(dataset, ...){
   corpus_frame <- dplyr::select(dataset, ...)
   text_vector <- as.character(corpus_frame[,1])
   dfm <- quanteda::dfm(text_vector, removeTwitter = T, stem = T, ignoredFeatures = all_stopwords)
-  a_corp <- corpus(text_vector)
-  metadoc(a_corp) <- corpus_frame[,2:ncol(corpus_frame)]
+  a_corp <- quanteda::corpus(text_vector)
+  quanteda::metadoc(a_corp) <- corpus_frame[,2:ncol(corpus_frame)]
   results = list(Corpus = a_corp, DFM = dfm)
   invisible(results)
 }
@@ -75,16 +75,16 @@ assemble_corpus <- function(dataset, ...){
 #' @param corpus A corpus opject as created by \code{assemble_corpus}.
 #' @details Removes terms and documents that don't meet term and doc minimums
 #' @export
-clean_dfm <- function(corpus){
-  term_sums <- colSums(corpus$DFM)
+clean_dfm <- function(corp){
+  term_sums <- colSums(as.matrix(corp$DFM))
   term_logical <- term_sums >= minimum_term_frequency
-  doc_sums <- rowSums(corpus$DFM)
+  doc_sums <- rowSums(as.matrix(corp$DFM))
   doc_logical <- doc_sums >= min_terms
-  cleaned_dfm <- corpus[doc_logical, term_logical]
+  cleaned_dfm <- corp$DFM[doc_logical, term_logical]
   cleaned_dfm
 }
-#recorrect term outliers after document outliers have been removed
 
+#recorrect term outliers after document outliers have been removed
 
 vect_project <- function(a,b){
   project <- crossprod(a,b) * b
@@ -110,7 +110,7 @@ dev_vector <- function(vect_list){
 #'  @export
 deviationalize <- function(cleaned_dfm){
   cleaned_dfm_mat <- as.matrix(cleaned_dfm)
-  cleaned_dfm_mat_t <- t(cleaned_dfm)
+  cleaned_dfm_mat_t <- t(cleaned_dfm_mat)
   list_dfm_mat <- apply(cleaned_dfm_mat_t, 2, list)
   mat_vec <- lapply(list_dfm_mat, unlist)
   mat_dev <- dev_vector(mat_vec)
