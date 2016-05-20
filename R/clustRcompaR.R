@@ -18,12 +18,18 @@ cluster_compare <- function(data, groups, num_clusters = n_clusters, stopwords =
 #'@details Performs the clustering half of the process, including assembling
 #'  and cleaning the corpus, deviationalizing and clustering.
 #'@export
-cluster_text <- function(data, num_clusters){
-  assemble_corpus()
-  clean_dfm()
-  deviationalize()
-  cluster()
+cluster_text <- function(data, ..., num_terms = 5){
+  corpus <- assemble_corpus(data, ...)
+  cleanDFM <- clean_dfm(corpus)
+  devVects <- deviationalize(cleanDFM)
+  # add parameter for clean DFM
+  cluster(devVects$MAT, devVects$DEV_MAT, cleanDFM, num_terms)
 }
+
+clusteredData <- cluster_text(cutdata, data.grade, data.teacher, data.time)
+
+clusteredData$clusters
+clusteredData$terms
 
 #' Compare wrapper function
 #'
@@ -33,6 +39,7 @@ cluster_text <- function(data, num_clusters){
 compare_clusters <- function(groups){
   compare()
 }
+
 
 n_clusters <- 6
 minimum_groups <- 2 # minimum groups a term has to be in for it to be included
@@ -61,7 +68,7 @@ all_stopwords <- append(standard_stopwords, additional_stopwords)
 #' @details Puts together the corpus and dfm from the data frame provided
 #' @export
 assemble_corpus <- function(dataset, ...){
-  corpus_frame <- dplyr::select(dataset, ...)
+  corpus_frame <- dplyr::select(dataset, everything())
   text_vector <- as.character(corpus_frame[,1])
   dfm <- quanteda::dfm(text_vector, removeTwitter = T, stem = T, ignoredFeatures = all_stopwords)
   a_corp <- quanteda::corpus(text_vector)
@@ -126,13 +133,14 @@ deviationalize <- function(cleaned_dfm){
 #'  number of clusters.  K-means algorithm uses these centers as a starting
 #'  point and fits its model.
 #'  @export
-cluster <- function(mat, dev_mat){
-  wss <- list()
-  for (i in 2:18){
-    wss[i] <- sum(kmeans(mat, centers = i)$betweenss) / kmeans(mat, centers = i)$totss
-  }
+cluster <- function(mat, dev_mat, cleanDFM, num_terms){
+#   wss <- list()
+#   for (i in 2:18){
+#     wss[i] <- sum(kmeans(mat, centers = i)$betweenss) / kmeans(mat, centers = i)$totss
+#   }
   dev_mat_t <- t(dev_mat)
 
+  # What distance measure should we be using here? should be cosine similarity
   distance <- dist(dev_mat_t, method = "euclidean")
   mat_dev_t_clust <- hclust(distance)
   hclust_cut <- cutree(mat_dev_t_clust, n_clusters)
@@ -155,18 +163,97 @@ cluster <- function(mat, dev_mat){
   kfit <- kmeans(dev_mat_t, start)
   ss_explained <- sum(kfit$betweenss) / kfit$totss
   cluster_words <- list()
-  for (i in 1:n_clusters){
-    #### need to work on this next
-    words <- mat[,kfit$cluster == i]
-    cluster_words[i] <- colnames(mat)[words]
+
+  outputList <- list()
+  for(i in 1:n_clusters){
+    clusterDFM <- cleanDFM[kfit$cluster == i,]
+    totalTermFreqs <- colSums(clusterDFM)
+    sortedTermFreqs <- sort(totalTermFreqs, decreasing = T)
+    outputTerms <- sortedTermFreqs[1:num_terms]
+    outputList[[length(outputList) + 1]] <- names(outputTerms)
+    names(outputList)[length(outputList)] <- paste("Cluster", i, "Terms")
+    outputList[[length(outputList) + 1]] <- outputTerms / nrow(clusterDFM)
+    names(outputList)[length(outputList)] <- paste("Cluster", i, "Term Frequencies")
   }
-  cluster_words
+  clusterTerms <- as.data.frame(outputList)
+  row.names(clusterTerms) <- NULL
+  # new output including the kmeans output as well as the most frequent terms
+   results = list(clusters = kfit, terms = clusterTerms)
 }
 
+
+clusteredData$clusters
+clusteredData$
 #' Compare the clusters to groups (model fit)
 #'
 #' @details Comparing function
 #' @export
 compare <- function(){
   # Compare specified groups based on cluster frequencies
+  # chi square differences for the groups
 }
+
+kfit <- clusteredData$clusters
+cleanDFM <- clusteredData$dfm
+num_terms <- 5
+
+outputList <- list()
+for(i in 1:n_clusters){
+  clusterDFM <- cleanDFM[kfit$cluster == i,]
+  totalTermFreqs <- colSums(clusterDFM)
+  sortedTermFreqs <- sort(totalTermFreqs, decreasing = T)
+  outputTerms <- sortedTermFreqs[1:num_terms]
+  outputList[[length(outputList) + 1]] <- names(outputTerms)
+  names(outputList)[length(outputList)] <- paste("Cluster", i, "Terms")
+  outputList[[length(outputList) + 1]] <- outputTerms / nrow(clusterDFM)
+  names(outputList)[length(outputList)] <- paste("Cluster", i, "Term Frequencies")
+}
+clusterTerms <- as.data.frame(outputList)
+row.names(clusterTerms) <- NULL
+
+dumbList <- list(c(1,2,3), c(4,5,6), c(7,8,9))
+names(dumbList) <- c("first", "second", "third")
+
+as.data.frame(dumbList)
+
+str(clusteredData$cluster)
+clusteredData$cluster == 1
+##########################################
+library(ppls)
+library(quanteda)
+setwd("/home/alex/Dropbox/clustRcompaR")
+data <- read.csv("scip_data.csv", header = T)
+View(data)
+setwd("/home/alex/Dropbox/R Alex Files/cluster-compare-text")
+
+cutdata <- data.frame(data$purpose, data$grade, data$teacher, data$time)
+
+corpus_frame <- dplyr::select(data, ...)
+text_vector <- as.character(corpus_frame[,1])
+dfm <- quanteda::dfm(text_vector, removeTwitter = T, stem = T, ignoredFeatures = all_stopwords)
+a_corp <- quanteda::corpus(text_vector)
+quanteda::metadoc(a_corp) <- corpus_frame[,2:ncol(corpus_frame)]
+results = list(Corpus = a_corp, DFM = dfm)
+invisible(results)
+
+corpus <- assemble_corpus(cutdata, data$purpose, data$grade, data$teacher, data$time)
+cleanDFM <- clean_dfm(corpus)
+devVectors <- deviationalize(cleanDFM)
+clustKfit <- cluster(devVectors$MAT, devVectors$DEV_MAT)
+clustNames <- names(clustKfit$cluster[clustKfit$cluster == 1])
+
+View(cleanDFM)
+clust1rows <- row.names(cleanDFM) %in% clustNames
+clust1 <- cleanDFM[clust1rows,]
+sort(colSums(clust1), decreasing = T)[1:10] / nrow(clust1)
+
+cleanDFMdf <- as.data.frame(cleanDFM)
+cleanDFMdf$cluster <- clustKfit$cluster
+
+clustered <- group_by(cleanDFMdf, cluster)
+
+summarize(clustered, sort(colSums(), decreasing = T)[1:10] / nrow())
+sort(colSums(clust1), decreasing = T)[1:10] / nrow(clust1)
+
+tapply(cleanDFMdf, cleanDFMdf$cluster, FUN = function(x){colSums(x)})
+
