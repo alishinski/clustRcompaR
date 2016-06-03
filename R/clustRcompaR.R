@@ -1,3 +1,4 @@
+# clustRcompaR.R
 
 #' Main Wrapper function
 #'
