@@ -190,38 +190,35 @@ process_cutdata <- function(){
 
   # can we just use cutdata? it breaks somehow when we do, but had to add text name so we can find which are missing
   cutdata_new <- data.frame(data.textid = paste0("text", 1:nrow(data)), data$purpose, data$grade, data$teacher, data$time)
-
   # finds which are missing from cluster function output and removes them
-  missing_cluster_assignment <- cutdata_new$data.textid %in% names(clusteredData$clusters$cluster)
-  missing_cluster_assignment_index <- which(missing_cluster_assignment == F)
-  cutdata_ss <- cutdata_new[-missing_cluster_assignment_index, ]
-
+  not_missing_cluster_assignment <- cutdata_new$data.textid %in% names(clusteredData$clusters$cluster)
+  cutdata_ss <- cutdata_new[not_missing_cluster_assignment, ]
   cutdata_ss$cluster <- clusteredData$clusters$cluster # adds cluster assignment from cluster function to cutdata
-  cutdata_ss
 }
 
 # Function to create a plot in compare
 
-create_plot <- function(to_plot){
+library(ggplot2)
 
-  chisq_p <- chisq.test(to_plot)
-  asterisk <- as.vector(chisq_p$stdres > 1.96 | chisq_p$stdres < -1.96)
-  asterisk[asterisk == TRUE] <- "*"
-  asterisk[asterisk == FALSE] <- ""
+compare_plot <- function(comparison_table){
 
-  doc_by_index <- t(t(to_plot)/colSums(to_plot))
-  doc_by_index <- as.data.frame(doc_by_index)
-  doc_plot <- cbind(doc_by_index, asterisk)
+  # chisq_p <- chisq.test(comparison_table)
+  # asterisk <- as.vector(chisq_p$stdres > 1.96 | chisq_p$stdres < -1.96)
+  # asterisk[asterisk == TRUE] <- "*"
+  # asterisk[asterisk == FALSE] <- ""
 
-  names(doc_plot) <- c("Cluster", "Group", "Proportion", "asterisk")
+  to_plot <- t(t(comparison_table)/colSums(comparison_table))
+  to_plot <- as.data.frame(to_plot)
+  to_plot
+  # doc_plot <- cbind(doc_by_index, asterisk) # this is associated with the asterisk code above
+
+  names(to_plot) <- c("Cluster", "Group", "Proportion")
 
   dodge = position_dodge(.9) # not sure this is needed
 
-  library(ggplot2)
-
   # lots of defaults that could be changed or made more simple
 
-  plot <- ggplot(doc_plot, aes(x = Group, y = Proportion, color = Cluster, ymax = max(Proportion)),
+  plot <- ggplot(to_plot, aes(x = Group, y = Proportion, color = Cluster, ymax = max(Proportion)),
                  scale_color_brewer(palette="Set3")) +
     # geom_bar(width = .825, position = dodge, stat = "identity") +
     geom_line(aes(group = Cluster), size = .75) +
@@ -248,19 +245,27 @@ create_plot <- function(to_plot){
 #'
 #' @details Comparing function
 #' @export
-compare <- function(compare_which){
+compare <- function(compare_which, which_clusters, which_groups){
   # Compare specified groups based on cluster frequencies
   # chi square differences for the groups
   df <- process_cutdata()
-  tmp <- which(names(df) %in% compare_which) # finds which column compare_which matches not sure this is best way
-  to_plot <- table(df$cluster, df[, tmp])
-  out <- list(to_plot, create_plot(to_plot))
-  out
+  comparison_table <- table(df$cluster, eval(parse(text = paste("df", compare_which, sep = "$"))))
+  invisible(comparison_table[which_clusters, which_groups])
 }
 
-compare("data.teacher")
-compare("data.grade")
-compare("data.time")
+compare_test <- function(comparison_table){
+  chisq_p <- chisq.test(comparison_table)
+  chisq_p$stdres[chisq_p$stdres > 1.96] <- "Sig. Greater"
+  chisq_p$stdres[chisq_p$stdres < -1.96] <- "Sig. Lesser"
+  chisq_p$stdres[chisq_p$stdres < 1.96 & chisq_p$stdres > -1.96] <- "Not Sig."
+  chisq_p$stdres
+}
+
+compare_test(compare("data.teacher"))
+
+out <- compare("data.teacher")
+out
+create_plot(out)
 
 kfit <- clusteredData$clusters
 cleanDFM <- clusteredData$dfm
