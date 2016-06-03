@@ -19,7 +19,7 @@ cluster_compare <- function(data, groups, num_clusters = n_clusters, stopwords =
 #'@details Performs the clustering half of the process, including assembling
 #'  and cleaning the corpus, deviationalizing and clustering.
 #'@export
-cluster_text <- function(data, ..., num_terms = 5){
+cluster_text <- function(data, ..., num_terms = 10){
   corpus <- assemble_corpus(data, ...)
   cleanDFM <- clean_dfm(corpus)
   devVects <- deviationalize(cleanDFM)
@@ -27,7 +27,7 @@ cluster_text <- function(data, ..., num_terms = 5){
   cluster(devVects$MAT, devVects$DEV_MAT, cleanDFM, num_terms)
 }
 
-clusteredData <- cluster_text(cutdata, data.grade, data.teacher, data.time)
+clusteredData <- cluster_text(cutdata, data.grade, data.teacher, data.time) # what the eff is _YYYYY_
 
 clusteredData$clusters
 clusteredData$terms
@@ -179,20 +179,88 @@ cluster <- function(mat, dev_mat, cleanDFM, num_terms){
   clusterTerms <- as.data.frame(outputList)
   row.names(clusterTerms) <- NULL
   # new output including the kmeans output as well as the most frequent terms
-   results = list(clusters = kfit, terms = clusterTerms)
+  results = list(clusters = kfit, terms = clusterTerms)
 }
 
+# clusteredData <- cluster_text(cutdata, data.grade, data.teacher, data.time) # what the eff is _YYYYY_
 
-clusteredData$clusters
-clusteredData$
+process_cutdata <- function(){
+  # this removes responses from cutdata that weren't clusters (due to length, etc.)
+  # this creates a new cutdata, cutdata_ss
+
+  # can we just use cutdata? it breaks somehow when we do, but had to add text name so we can find which are missing
+  cutdata_new <- data.frame(data.textid = paste0("text", 1:nrow(data)), data$purpose, data$grade, data$teacher, data$time)
+
+  # finds which are missing from cluster function output and removes them
+  missing_cluster_assignment <- cutdata_new$data.textid %in% names(clusteredData$clusters$cluster)
+  missing_cluster_assignment_index <- which(missing_cluster_assignment == F)
+  cutdata_ss <- cutdata_new[-missing_cluster_assignment_index, ]
+
+  cutdata_ss$cluster <- clusteredData$clusters$cluster # adds cluster assignment from cluster function to cutdata
+  cutdata_ss
+}
+
+# Function to create a plot in compare
+
+create_plot <- function(to_plot){
+
+  chisq_p <- chisq.test(to_plot)
+  asterisk <- as.vector(chisq_p$stdres > 1.96 | chisq_p$stdres < -1.96)
+  asterisk[asterisk == TRUE] <- "*"
+  asterisk[asterisk == FALSE] <- ""
+
+  doc_by_index <- t(t(to_plot)/colSums(to_plot))
+  doc_by_index <- as.data.frame(doc_by_index)
+  doc_plot <- cbind(doc_by_index, asterisk)
+
+  names(doc_plot) <- c("Cluster", "Group", "Proportion", "asterisk")
+
+  dodge = position_dodge(.9) # not sure this is needed
+
+  library(ggplot2)
+
+  # lots of defaults that could be changed or made more simple
+
+  plot <- ggplot(doc_plot, aes(x = Group, y = Proportion, color = Cluster, ymax = max(Proportion)),
+                 scale_color_brewer(palette="Set3")) +
+    # geom_bar(width = .825, position = dodge, stat = "identity") +
+    geom_line(aes(group = Cluster), size = .75) +
+    geom_point() +
+    # geom_text(aes(label = ChiSq), position = dodge, vjust = .25) +
+    theme_minimal() +
+    # ylab("Proportion of Responses") +
+    ylab("Proportion of Responses") +
+    xlab("Group") +
+    scale_color_brewer(palette="Set1") +
+    scale_x_discrete(name="") +
+    theme(text = element_text(size = 20)) +
+    theme(legend.position = "bottom") +
+    theme(legend.title=element_blank()) +
+    theme(legend.direction = "vertical") +
+    theme(legend.key.size = unit(1.66, "lines")) +
+    theme(text=element_text(size = 14, family = "Avenir"))
+
+  plot
+
+}
+
 #' Compare the clusters to groups (model fit)
 #'
 #' @details Comparing function
 #' @export
-compare <- function(){
+compare <- function(compare_which){
   # Compare specified groups based on cluster frequencies
   # chi square differences for the groups
+  df <- process_cutdata()
+  tmp <- which(names(df) %in% compare_which) # finds which column compare_which matches not sure this is best way
+  to_plot <- table(df$cluster, df[, tmp])
+  out <- list(to_plot, create_plot(to_plot))
+  out
 }
+
+compare("data.teacher")
+compare("data.grade")
+compare("data.time")
 
 kfit <- clusteredData$clusters
 cleanDFM <- clusteredData$dfm
@@ -219,12 +287,15 @@ as.data.frame(dumbList)
 
 str(clusteredData$cluster)
 clusteredData$cluster == 1
+
 ##########################################
+
 library(ppls)
 library(quanteda)
-setwd("/home/alex/Dropbox/clustRcompaR")
+setwd("/home/alex/Dropbox/clustRcompaR") # Alex
+setwd("~/dropbox/research/clustRcompaR") # Josh
 data <- read.csv("scip_data.csv", header = T)
-View(data)
+# View(data)
 setwd("/home/alex/Dropbox/R Alex Files/cluster-compare-text")
 
 cutdata <- data.frame(data$purpose, data$grade, data$teacher, data$time)
