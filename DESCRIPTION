@@ -12,7 +12,9 @@ Depends:
 URL: https://github.com/alishinski/clustRcompaR
 Imports:
   quanteda,
-  dplyr
+  dplyr,
+  ggplot2,
+  ppls
 #Suggests:
 #VignetteBuilder: knitr,
 

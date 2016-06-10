@@ -1,25 +1,24 @@
-# clustRcompaR.R
+# Hard coded stopwords
 
-#' Main Wrapper function
-#'
-#'@param data The data frame comparing the text vector as the first column
-#'  and any metadata in subsequent columns
-#'@details Calls the two main components, the clustering function and the
-#'comparing function
-#'@export
-cluster_compare <- function(data, groups, num_clusters = n_clusters, stopwords = standard_stopwords){
-  cluster_text(data, num_clusters)
-  compare_clusters(groups)
-}
+standard_stopwords <- c("a", "an", "the", "to", "of", "and", "for", "by", "on", "is", "I", "all", "this", "with",
+                        "it", "at", "from", "or", "you", "as", "your", "are", "be", "that", "not", "have", "was",
+                        "we", "what", "which", "there", "they", "he", "she", "his", "hers", "had", "word", "our",
+                        "you", "about", "that", "this", "but", "not", "what")
+additional_stopwords <- c("lorum")
+all_stopwords <- append(standard_stopwords, additional_stopwords)
 
 #' Cluster wrapper function
 #'
 #'@param data The data frame comparing the text vector as the first column
 #'  and any metadata in subsequent columns
+#'@param n_clusters The number of clusters to be used for the clustering solution
+#'@param minimum_term_frequency The minimum number of occurances for a term to be included
+#'@param min_terms The minimum number of terms for a document to be included
+#'@param num_terms Number of terms to display in clustering summary output
 #'@details Performs the clustering half of the process, including assembling
 #'  and cleaning the corpus, deviationalizing and clustering.
 #'@export
-cluster_text <- function(data, ..., num_terms = 10){
+cluster_text <- function(data, ..., n_clusters, minimum_term_frequency = 3, min_terms = 3, num_terms = 10){
   corpus <- assemble_corpus(data, ...)
   cleanDFM <- clean_dfm(corpus)
   devVects <- deviationalize(cleanDFM)
@@ -28,38 +27,7 @@ cluster_text <- function(data, ..., num_terms = 10){
 }
 
 clusteredData <- cluster_text(cutdata, data.grade, data.teacher, data.time) # what the eff is _YYYYY_
-
-clusteredData$clusters
-clusteredData$terms
-
-#' Compare wrapper function
-#'
-#'@param groups The groupings used for the comparison
-#'@details Performs the comparing half of the process.
-#'@export
-compare_clusters <- function(groups){
-  compare()
-}
-
-
-n_clusters <- 6
-minimum_groups <- 2 # minimum groups a term has to be in for it to be included
-minimum_term_frequency <- 4 # minimum times a term has to occur overall for it to be included
-min_terms <- 2 # minimum terms in a document for it to be included
-term <- "purpose"
-
-standard_stopwords <- c("a", "an", "the", "to", "of", "and", "for", "by", "on", "is", "I", "all", "this", "with",
-                        "it", "at", "from", "or", "you", "as", "your", "are", "be", "that", "not", "have", "was",
-                        "we", "what", "which", "there", "they", "he", "she", "his", "hers", "had", "word", "our",
-                        "you", "about", "that", "this", "but", "not", "what")
-
-# Additional stopwords
-
-additional_stopwords <- c("lorum")
-
-# Combine standard and additional stopwords
-
-all_stopwords <- append(standard_stopwords, additional_stopwords)
+assemble_corpus(cutdata, data.grade, data.teacher, data.time)
 
 #' First corpus building function
 #'
@@ -92,13 +60,13 @@ clean_dfm <- function(corp){
   cleaned_dfm
 }
 
-#recorrect term outliers after document outliers have been removed
-
+# calculates vector projections
 vect_project <- function(a,b){
   project <- crossprod(a,b) * b
   project
 }
 
+# calculates deviation vectors
 dev_vector <- function(vect_list){
   norm_vects <- lapply(vect_list, normalize.vector)
   sum_vect <- colSums(do.call(rbind, norm_vects))
@@ -196,10 +164,28 @@ process_cutdata <- function(){
   cutdata_ss$cluster <- clusteredData$clusters$cluster # adds cluster assignment from cluster function to cutdata
 }
 
-# Function to create a plot in compare
+#' Compare wrapper function
+#'
+#' @param compare_which A factor variable of the groups of interest for comparison.
+#' @param which_clusters Clusters to be included in the comparison. Default is all clusters.
+#' @param which_groups Levels of the grouping factor to be included in the comparison. Default is all levels.
+#'
+#' @details Function for comparing clustering solution between subgroups.  Output is contingency table for the specified groups and clusters.
+#' @export
+compare <- function(compare_which, which_clusters, which_groups){
+  # Compare specified groups based on cluster frequencies
+  # chi square differences for the groups
+  df <- process_cutdata()
+  comparison_table <- table(df$cluster, eval(parse(text = paste("df", compare_which, sep = "$"))))
+  invisible(comparison_table[which_clusters, which_groups])
+}
 
-library(ggplot2)
-
+#' Compare plot function
+#'
+#' @param comparison_table The table output from the \code{compare} function
+#'
+#' @details Creates a plot visualizing group clustering differences across the groups and clusters specified in the \code{compare} function. Creates a ggplot 2 object, so default parameters can be overridden by adding layers to this object.
+#' @export
 compare_plot <- function(comparison_table){
 
   # chisq_p <- chisq.test(comparison_table)
@@ -236,29 +222,22 @@ compare_plot <- function(comparison_table){
     theme(legend.direction = "vertical") +
     theme(legend.key.size = unit(1.66, "lines")) +
     theme(text=element_text(size = 14, family = "Avenir"))
-
   plot
-
 }
 
-#' Compare the clusters to groups (model fit)
+#' Compare test function
 #'
-#' @details Comparing function
+#' @param comparison_table The table output from the \code{compare} function
+#'
+#' @details Performs a chi-squared test across the groups and clusters specified in the \code{compare} function. Output gives omnibus test results and a table indicating significant individual chi-squared differences.
 #' @export
-compare <- function(compare_which, which_clusters, which_groups){
-  # Compare specified groups based on cluster frequencies
-  # chi square differences for the groups
-  df <- process_cutdata()
-  comparison_table <- table(df$cluster, eval(parse(text = paste("df", compare_which, sep = "$"))))
-  invisible(comparison_table[which_clusters, which_groups])
-}
-
 compare_test <- function(comparison_table){
   chisq_p <- chisq.test(comparison_table)
   chisq_p$stdres[chisq_p$stdres > 1.96] <- "Sig. Greater"
   chisq_p$stdres[chisq_p$stdres < -1.96] <- "Sig. Lesser"
   chisq_p$stdres[chisq_p$stdres < 1.96 & chisq_p$stdres > -1.96] <- "Not Sig."
-  chisq_p$stdres
+  results <- list(chisq_p, chisq_p$stdres)
+  invisible(results)
 }
 
 compare_test(compare("data.teacher"))
