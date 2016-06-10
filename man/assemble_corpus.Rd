@@ -4,13 +4,15 @@
 \alias{assemble_corpus}
 \title{First corpus building function}
 \usage{
-assemble_corpus(dataset, ...)
+assemble_corpus(dataset, ..., stopwords)
 }
 \arguments{
 \item{dataset}{The data from which the corpus is drawn with documents in
 first column}
 
 \item{...}{The metadata columns following the text column}
+
+\item{stopwords}{Words to exclude from the clustering}
 }
 \description{
 First corpus building function

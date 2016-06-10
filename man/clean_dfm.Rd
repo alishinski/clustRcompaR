@@ -4,10 +4,14 @@
 \alias{clean_dfm}
 \title{Cleans the DFM based on specified term minimums}
 \usage{
-clean_dfm(corpus)
+clean_dfm(corp, minimum_term_frequency, min_terms)
 }
 \arguments{
-\item{corpus}{A corpus opject as created by \code{assemble_corpus}.}
+\item{corp}{A corpus opject as created by \code{assemble_corpus}.}
+
+\item{minimum_term_frequency}{Minimum number of occurances for a term to be used}
+
+\item{min_terms}{Minimum number of terms for document to be used}
 }
 \description{
 Cleans the DFM based on specified term minimums

@@ -4,11 +4,23 @@
 \alias{cluster_text}
 \title{Cluster wrapper function}
 \usage{
-cluster_text(data, num_clusters)
+cluster_text(data, ..., n_clusters, minimum_term_frequency = 3,
+  min_terms = 3, num_terms = 10, stopwords = NULL)
 }
 \arguments{
-\item{data}{The data frame comparing the text vector as the first column
-and any metadata in subsequent columns}
+\item{data}{The data frame comparing the text vector as the first column}
+
+\item{...}{Additional columns of the data frame containing metadata cfor comparison}
+
+\item{n_clusters}{The number of clusters to be used for the clustering solution}
+
+\item{minimum_term_frequency}{The minimum number of occurances for a term to be included}
+
+\item{min_terms}{The minimum number of terms for a document to be included}
+
+\item{num_terms}{Number of terms to display in clustering summary output}
+
+\item{stopwords}{Additional stopwords to exclude from clustering analysis}
 }
 \description{
 Cluster wrapper function

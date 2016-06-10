@@ -4,12 +4,18 @@
 \alias{cluster}
 \title{Clusters the vectors using 2-stage clustering algorithm}
 \usage{
-cluster(mat, dev_mat)
+cluster(mat, dev_mat, n_clusters, cleanDFM, num_terms)
 }
 \arguments{
 \item{mat}{The clean dfm as a matrix and transposed, from \code{deviationalize}}
 
 \item{dev_mat}{The deviation matrix of the dfm, from \code{deviationalize}}
+
+\item{n_clusters}{number of desired clusters}
+
+\item{cleanDFM}{DFM object from \code{clean_dfm} function}
+
+\item{num_terms}{Minimum number of terms per document}
 }
 \description{
 Clusters the vectors using 2-stage clustering algorithm

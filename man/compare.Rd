@@ -2,14 +2,23 @@
 % Please edit documentation in R/clustRcompaR.R
 \name{compare}
 \alias{compare}
-\title{Compare the clusters to groups (model fit)}
+\title{Compare wrapper function}
 \usage{
-compare()
+compare(compare_which, clustering_solution, which_clusters, which_groups)
+}
+\arguments{
+\item{compare_which}{A factor variable of the groups of interest for comparison.}
+
+\item{clustering_solution}{The output from the \code{cluster} function.}
+
+\item{which_clusters}{Clusters to be included in the comparison. Default is all clusters.}
+
+\item{which_groups}{Levels of the grouping factor to be included in the comparison. Default is all levels.}
 }
 \description{
-Compare the clusters to groups (model fit)
+Compare wrapper function
 }
 \details{
-Comparing function
+Function for comparing clustering solution between subgroups.  Output is contingency table for the specified groups and clusters.
 }
 
