@@ -32,7 +32,6 @@ clean_dfm <- function(corp, minimum_term_frequency, min_terms){
   cleaned_dfm
 }
 
-
 # calculates vector projections
 vect_project <- function(a,b){
   project <- crossprod(a,b) * b
@@ -108,11 +107,11 @@ cluster_text <- function(mat, dev_mat, n_clusters, cleanDFM, num_terms){
   kfit <- kmeans(dev_mat_t, start)
   ss_explained <- sum(kfit$betweenss) / kfit$totss
   cluster_words <- list()
-
+  # Problem here in the current version
   outputList <- list()
   for(i in 1:n_clusters){
     clusterDFM <- cleanDFM[kfit$cluster == i,]
-    totalTermFreqs <- colSums(clusterDFM)
+    totalTermFreqs <- quanteda::colSums(clusterDFM)
     sortedTermFreqs <- sort(totalTermFreqs, decreasing = T)
     outputTerms <- sortedTermFreqs[1:num_terms]
     outputList[[length(outputList) + 1]] <- names(outputTerms)

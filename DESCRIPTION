@@ -1,8 +1,8 @@
 Package: clustRcompaR
 Type: Package
 Title: Easy Interface for Clustering a Set of Documents and Exploring Group-Based Patterns
-Version: 0.1
-Date: 2015-08-13
+Version: 0.1.2
+Date: 2015-06-11
 Author: Josh Rosenberg, Alex Lishinski
 Maintainer: Who to complain to <alexlishinski@gmail.com>
 Description: This package provides an interface to perform cluster analysis on a corpus of text.  Interfaces to Quanteda to assemble text corpuses easily.  Deviationalizes text vectors prior to clustering using technique described by Sherin (2013).  Uses cosine similarity as distance metric for two stage clustering process, involving Ward's algorithm hierarchical agglomerative clustering, and k-means clustering. Selects optimal number of clusters to maximize "variance explained" by clusters, adjusted by the number of clusters.  Provides plotted output of clustering results as well as printed output.  Assesses "model fit" of clustering solution to a set of preexisting groups in dataset.

@@ -15,7 +15,10 @@ cutdata <- data.frame(data$purpose, data$grade, data$teacher, data$time)
 
 # clustering test
 clusteredDataNew <- cluster(cutdata, data.grade, data.teacher, data.time, n_clusters = 5)
-
+cluster_text
+colSums
+quanteda::colSums
+showMethods("quanteda::colSums")
 #raw clustering output
 clusteredDataNew$cluster$clusters$cluster
 #print output
