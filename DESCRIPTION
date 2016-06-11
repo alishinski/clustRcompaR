@@ -14,7 +14,8 @@ Imports:
   quanteda,
   dplyr,
   ggplot2,
-  ppls
+  ppls,
+  tidyr
 #Suggests:
 #VignetteBuilder: knitr,
 

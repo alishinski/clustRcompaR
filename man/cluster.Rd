@@ -2,28 +2,31 @@
 % Please edit documentation in R/clustRcompaR.R
 \name{cluster}
 \alias{cluster}
-\title{Clusters the vectors using 2-stage clustering algorithm}
+\title{Cluster wrapper function}
 \usage{
-cluster(mat, dev_mat, n_clusters, cleanDFM, num_terms)
+cluster(data, ..., n_clusters, minimum_term_frequency = 3, min_terms = 3,
+  num_terms = 10, stopwords = NULL)
 }
 \arguments{
-\item{mat}{The clean dfm as a matrix and transposed, from \code{deviationalize}}
+\item{data}{The data frame comparing the text vector as the first column}
 
-\item{dev_mat}{The deviation matrix of the dfm, from \code{deviationalize}}
+\item{...}{Additional columns of the data frame containing metadata cfor comparison}
 
-\item{n_clusters}{number of desired clusters}
+\item{n_clusters}{The number of clusters to be used for the clustering solution}
 
-\item{cleanDFM}{DFM object from \code{clean_dfm} function}
+\item{minimum_term_frequency}{The minimum number of occurances for a term to be included}
 
-\item{num_terms}{Minimum number of terms per document}
+\item{min_terms}{The minimum number of terms for a document to be included}
+
+\item{num_terms}{Number of terms to display in clustering summary output}
+
+\item{stopwords}{Additional stopwords to exclude from clustering analysis}
 }
 \description{
-Clusters the vectors using 2-stage clustering algorithm
+Cluster wrapper function
 }
 \details{
-Applies 2 stage clustering algorithm, using Ward's method for
- hierarchical agglomerative clustering to set the centers for the specified
- number of clusters.  K-means algorithm uses these centers as a starting
- point and fits its model.
+Performs the clustering half of the process, including assembling
+ and cleaning the corpus, deviationalizing and clustering.
 }
 
