@@ -39,7 +39,7 @@ cluster <- function(data, ..., n_clusters, minimum_term_frequency = 3, min_terms
 #'
 #' @details Function for comparing clustering solution between subgroups.  Output is contingency table for the specified groups and clusters.
 #' @export
-compare <- function(compare_which, clustering_solution, which_clusters, which_groups){
+compare <- function(clustering_solution, compare_which, which_clusters, which_groups){
   # Compare specified groups based on cluster frequencies
   # chi square differences for the groups
   clusters <- clustering_solution$cluster$clusters$cluster
