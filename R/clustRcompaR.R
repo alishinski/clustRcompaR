@@ -58,8 +58,8 @@ compare_plot <- function(comparison_table){
   to_plot <- as.data.frame(to_plot)
   to_plot <- tidyr::gather(to_plot, Group, Proportion)
   to_plot$Cluster <- rep(1:nrow(comparison_table), ncol(comparison_table))
-  plot <- ggplot2::ggplot(to_plot, ggplot2::aes(x = Group, y = Proportion, color = Cluster, ymax = max(Proportion))) +
-    ggplot2::geom_line(ggplot2::aes(group = Cluster), size = .75) +
+  plot <- ggplot2::ggplot(to_plot, ggplot2::aes(x = Group, y = Proportion, color = factor(Cluster), ymax = max(Proportion))) +
+    ggplot2::geom_line(ggplot2::aes(group = factor(Cluster)), size = .75) +
     ggplot2::geom_point() +
     ggplot2::theme_minimal() +
     ggplot2::ylab("Proportion of Responses") +
