@@ -5,6 +5,10 @@ An `R` package to cluster and compare text data.
 ## Background 
 [Document clustering](https://en.wikipedia.org/wiki/Document_clustering) is a common technique to discover topics in a corpus of texts. This package uses functions from the [`quanteda`](https://github.com/kbenoit/quanteda) `R` package as the basis for two functions, `cluster()` and `compare(), to make document clustering and comparing topics identified through document clustering across factors straightforward.
 
+## Installation
+
+Because this package is in development and is not yet available on CRAN, to install it, first install the `devtools` package using `install.packages("devtools")`, followed by the function `devtools::install_github("alishinski/clustRcompaR")`. After installing the package, use `library(clustRcompaR)` to load it in each session.
+
 ## Workflow
 
 * First, use `cluster()` on a `data.frame` with the first column a `vector` of `strings` and any subsequent columns `vectors` of `factors`.
