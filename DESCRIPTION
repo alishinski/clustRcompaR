@@ -16,6 +16,8 @@ Imports:
   ggplot2,
   ppls,
   tidyr
-#Suggests:
+#Suggests: 
 #VignetteBuilder: knitr,
-
+Suggests: knitr,
+    rmarkdown
+VignetteBuilder: knitr
