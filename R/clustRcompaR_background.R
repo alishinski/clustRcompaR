@@ -7,9 +7,9 @@
 #' @details Puts together the corpus and dfm from the data frame provided
 #' @export
 assemble_corpus <- function(dataset, ..., stopwords){
-  corpus_frame <- dplyr::select(dataset, everything())
+  corpus_frame <- dplyr::select(data_ss, dplyr::everything())
   text_vector <- as.character(corpus_frame[,1])
-  dfm <- quanteda::dfm(text_vector, removeTwitter = T, stem = T, ignoredFeatures = stopwords)
+  dfm <- quanteda::dfm(text_vector, removeTwitter = T, stem = T, ignoredFeatures = standard_stopwords)
   a_corp <- quanteda::corpus(text_vector)
   quanteda::metadoc(a_corp) <- corpus_frame[,2:ncol(corpus_frame)]
   results = list(Corpus = a_corp, DFM = dfm)
