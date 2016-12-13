@@ -1,3 +1,12 @@
+process_cutdata <- function(data, corpus, min_terms){
+    # this removes responses from cutdata that weren't clusters (due to length, etc.)
+    doc_sums <- rowSums(as.matrix(corpus$DFM))
+    doc_logical <- doc_sums >= min_terms
+    process_data <- data[doc_logical,]
+    results <- invisible(process_data)
+    results
+}
+
 #' First corpus building function
 #'
 #' @param dataset The data from which the corpus is drawn with documents in
@@ -6,10 +15,11 @@
 #' @param stopwords Words to exclude from the clustering
 #' @details Puts together the corpus and dfm from the data frame provided
 #' @export
-assemble_corpus <- function(dataset, ..., stopwords){
-  corpus_frame <- dplyr::select(data_ss, dplyr::everything())
+assemble_corpus <- function(data, stopwords){
+  data <- data.frame(data, stringsAsFactors = F)
+  corpus_frame <- dplyr::select(data, dplyr::everything())
   text_vector <- as.character(corpus_frame[,1])
-  dfm <- quanteda::dfm(text_vector, removeTwitter = T, stem = T, ignoredFeatures = standard_stopwords)
+  dfm <- quanteda::dfm(text_vector, removeTwitter = T, stem = T, ignoredFeatures = stopwords)
   a_corp <- quanteda::corpus(text_vector)
   quanteda::metadoc(a_corp) <- corpus_frame[,2:ncol(corpus_frame)]
   results = list(Corpus = a_corp, DFM = dfm)
@@ -123,13 +133,4 @@ cluster_text <- function(mat, dev_mat, n_clusters, cleanDFM, num_terms){
   row.names(clusterTerms) <- NULL
   # new output including the kmeans output as well as the most frequent terms
   results = list(clusters = kfit, terms = clusterTerms)
-}
-
-process_cutdata <- function(data, corpus, min_terms){
-  # this removes responses from cutdata that weren't clusters (due to length, etc.)
-  doc_sums <- rowSums(as.matrix(corpus$DFM))
-  doc_logical <- doc_sums >= min_terms
-  process_data <- data[doc_logical,]
-  results <- invisible(process_data)
-  results
 }

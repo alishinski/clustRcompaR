@@ -27,7 +27,7 @@ cluster <- function(data, ..., n_clusters, minimum_term_frequency = 3, min_terms
   } else {
     all_stopwords <- standard_stopwords
   }
-  corpus <- assemble_corpus(data_ss, stopwords = all_stopwords)
+  corpus <- assemble_corpus(data, stopwords = all_stopwords)
   cleanDFM <- clean_dfm(corpus, minimum_term_frequency, min_terms)
   compare_frame <- process_cutdata(data, corpus, min_terms)
   devVects <- deviationalize(cleanDFM)
