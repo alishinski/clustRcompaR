@@ -53,17 +53,15 @@ compare <- function(clustering_solution, compare_which, which_clusters, which_gr
 #' @details Creates a plot visualizing group clustering differences across the groups and clusters specified in the \code{compare} function. Creates a \code{ggplot} object, so default parameters can be overridden by adding layers to this object.
 #' @export
 compare_plot <- function(comparison_table){
-  comparison_table <- for_out
   to_plot <- t(t(comparison_table)/colSums(comparison_table))
   to_plot <- as.data.frame(to_plot)
-  to_plot <- tidyr::gather(to_plot, Group, Proportion)
-  to_plot$Cluster <- rep(1:nrow(comparison_table), ncol(comparison_table))
-  plot <- ggplot2::ggplot(to_plot, ggplot2::aes(x = Group, y = Proportion, color = factor(Cluster), ymax = max(Proportion))) +
-    ggplot2::geom_line(ggplot2::aes(group = factor(Cluster)), size = .75) +
+  names(to_plot)[2] <- "group"
+  plot <- ggplot2::ggplot(to_plot, ggplot2::aes(x = group, y = Freq, color = clusters)) +
+    ggplot2::geom_line(ggplot2::aes(group = clusters), size = .75) +
     ggplot2::geom_point() +
     ggplot2::theme_minimal() +
     ggplot2::ylab("Proportion of Responses") +
-    ggplot2::xlab("Cluster")
+    ggplot2::xlab("Group")
   plot
 }
 
