@@ -6,15 +6,19 @@ library(ppls)
 library(quanteda)
 library(ggplot2)
 library(tidyr)
+devtools::load_all()
 
 #grab the data
-setwd("/home/alex/Dropbox/clustRcompaR") # Alex
-#setwd("~/dropbox/research/clustRcompaR") # Josh
+# setwd("/home/alex/Dropbox/clustRcompaR") # Alex
+setwd("~/dropbox/research/clustRcompaR") # Josh
 data <- read.csv("scip_data.csv", header = T)
-cutdata <- data.frame(data$purpose, data$grade, data$teacher, data$time)
+cutdata <- data.frame(data$purpose, data$grade, data$teacher, data$time, stringsAsFactors = F)
+cutdata$data.purpose <- as.character(cutdata$data.purpose)
+str(cutdata
 
 # clustering test
-clusteredDataNew <- cluster(cutdata, data.grade, data.teacher, data.time, n_clusters = 5)
+clusteredDataNew <- cluster(cutdata, data.grade, n_clusters = 5)
+clusteredDataNew[[1]]
 cluster_text
 colSums
 quanteda::colSums
@@ -27,7 +31,7 @@ clusteredDataNew$cluster$terms
 clusteredDataNew$compare
 
 # Compare functions testing
-out <- compare("data.teacher", clusteredDataNew)
+out <- compare(clusteredDataNew, "data.grade", 1:5, 1:2)
 out
 
 # test testing code

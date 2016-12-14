@@ -24,6 +24,7 @@ cluster <- function(data, ..., n_clusters, minimum_term_frequency = 3, min_terms
   }
   corpus <- assemble_corpus(data, stopwords = all_stopwords)
   cleanDFM <- clean_dfm(corpus, minimum_term_frequency, min_terms)
+  print(cleanDFM)
   compare_frame <- process_cutdata(data, corpus, min_terms)
   devVects <- deviationalize(cleanDFM)
   clusters <- cluster_text(devVects$MAT, devVects$DEV_MAT, n_clusters, cleanDFM, num_terms)
@@ -57,8 +58,8 @@ compare_plot <- function(comparison_table){
   to_plot <- t(t(comparison_table)/colSums(comparison_table))
   to_plot <- as.data.frame(to_plot)
   names(to_plot)[2] <- "group"
-  plot <- ggplot2::ggplot(to_plot, ggplot2::aes(x = group, y = Freq, color = clusters)) +
-    ggplot2::geom_line(ggplot2::aes(group = clusters), size = .75) +
+  plot <- ggplot2::ggplot(to_plot, ggplot2::aes(x = to_plot$group, y = to_plot$Freq, color = to_plot$clusters)) +
+    ggplot2::geom_line(ggplot2::aes(group = to_plot$clusters), size = .75) +
     ggplot2::geom_point() +
     ggplot2::theme_minimal() +
     ggplot2::ylab("Proportion of Responses") +
@@ -73,7 +74,7 @@ compare_plot <- function(comparison_table){
 #' @details Performs a chi-squared test across the groups and clusters specified in the \code{compare} function. Output gives omnibus test results and a table indicating significant individual chi-squared differences.
 #' @export
 compare_test <- function(comparison_table){
-  chisq_p <- chisq.test(comparison_table)
+  chisq_p <- stats::chisq.test(comparison_table)
   chisq_p$stdres[chisq_p$stdres > 1.96] <- "Sig. Greater"
   chisq_p$stdres[chisq_p$stdres < -1.96] <- "Sig. Lesser"
   chisq_p$stdres[chisq_p$stdres < 1.96 & chisq_p$stdres > -1.96] <- "Not Sig."

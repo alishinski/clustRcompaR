@@ -95,9 +95,9 @@ cluster_text <- function(mat, dev_mat, n_clusters, cleanDFM, num_terms){
   dev_mat_t <- t(dev_mat)
 
   # What distance measure should we be using here? should be cosine similarity
-  distance <- dist(dev_mat_t, method = "euclidean")
-  mat_dev_t_clust <- hclust(distance)
-  hclust_cut <- cutree(mat_dev_t_clust, n_clusters)
+  distance <- stats::dist(dev_mat_t, method = "euclidean")
+  mat_dev_t_clust <- stats::hclust(distance)
+  hclust_cut <- stats::cutree(mat_dev_t_clust, n_clusters)
 
   clusters1 <- list()
   for (i in seq(n_clusters)){
@@ -114,7 +114,7 @@ cluster_text <- function(mat, dev_mat, n_clusters, cleanDFM, num_terms){
   start <- data.frame(matrix(unlist(cluster_freqs1), nrow=length(cluster_freqs1[[1]]), byrow=T), stringsAsFactors=FALSE)
   start <- as.matrix(start)
   start <- t(start)
-  kfit <- kmeans(dev_mat_t, start)
+  kfit <- stats::kmeans(dev_mat_t, start)
   ss_explained <- sum(kfit$betweenss) / kfit$totss
   cluster_words <- list()
   # Problem here in the current version

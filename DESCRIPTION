@@ -2,7 +2,7 @@ Package: clustRcompaR
 Type: Package
 Title: Easy Interface for Clustering a Set of Documents and Exploring Group-
     Based Patterns
-Version: 0.1.2
+Version: 0.1.0
 Date: 2015-06-11
 Author: Josh Rosenberg, Alex Lishinski
 Maintainer: Who to complain to <alexlishinski@gmail.com>
