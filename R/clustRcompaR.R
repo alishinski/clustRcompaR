@@ -11,11 +11,6 @@
 #'  and cleaning the corpus, deviationalizing and clustering.
 #'@export
 
-minimum_term_frequency = 3
-min_terms = 3
-num_terms = 10
-data <-
-
 cluster <- function(data, ..., n_clusters, minimum_term_frequency = 3, min_terms = 3, num_terms = 10, stopwords = NULL){
   standard_stopwords <- c("a", "an", "the", "to", "of", "and", "for", "by", "on", "is", "I", "all", "this", "with",
                           "it", "at", "from", "or", "you", "as", "your", "are", "be", "that", "not", "have", "was",

@@ -9,7 +9,7 @@ process_cutdata <- function(data, corpus, min_terms){
 
 #' First corpus building function
 #'
-#' @param dataset The data from which the corpus is drawn with documents in
+#' @param data The data from which the corpus is drawn with documents in
 #'  first column
 #' @param ... The metadata columns following the text column
 #' @param stopwords Words to exclude from the clustering
