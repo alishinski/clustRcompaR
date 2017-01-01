@@ -5,7 +5,7 @@ Title: Easy Interface for Clustering a Set of Documents and Exploring Group-
 Version: 0.1.0
 Date: 2015-06-11
 Author: Josh Rosenberg, Alex Lishinski
-Maintainer: Who to complain to <alexlishinski@gmail.com>
+Maintainer: Alex Lishinski <alexlishinski@gmail.com>
 Description: This package provides an interface to perform cluster analysis
     on a corpus of text. Interfaces to Quanteda to assemble text corpuses easily.
     Deviationalizes text vectors prior to clustering using technique described
