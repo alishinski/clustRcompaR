@@ -1,3 +1,9 @@
+## Notes on a previous submission
+
+In a previous submission, I was asked to remove the misspelled '#Suggests' and '#VignetteBuilder' text,
+change the description field to not begin with "This package," and a reference to the article cited in the
+description, and update the date field; we made each of these changes.
+
 ## Test environments
 * local OS X install, R 3.3.1
 * ubuntu 12.04 (on travis-ci), R 3.3.1
