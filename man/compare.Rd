@@ -21,4 +21,3 @@ Compare wrapper function
 \details{
 Function for comparing clustering solution between subgroups.  Output is contingency table for the specified groups and clusters.
 }
-

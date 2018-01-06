@@ -27,4 +27,3 @@ Applies 2 stage clustering algorithm, using Ward's method for
  point and fits its model.
  @export
 }
-

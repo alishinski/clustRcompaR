@@ -20,4 +20,3 @@ First corpus building function
 \details{
 Puts together the corpus and dfm from the data frame provided
 }
-

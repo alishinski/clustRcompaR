@@ -15,4 +15,3 @@ Compare plot function
 \details{
 Creates a plot visualizing group clustering differences across the groups and clusters specified in the \code{compare} function. Creates a \code{ggplot} object, so default parameters can be overridden by adding layers to this object.
 }
-

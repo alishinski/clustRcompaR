@@ -3,3 +3,5 @@
 scip_data.csv
 testing_code.R
 ^cran-comments\.md$
+^README\.Rmd$
+^data-raw$

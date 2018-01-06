@@ -15,4 +15,3 @@ Compare test function
 \details{
 Performs a chi-squared test across the groups and clusters specified in the \code{compare} function. Output gives omnibus test results and a table indicating significant individual chi-squared differences.
 }
-
