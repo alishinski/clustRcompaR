@@ -12,6 +12,8 @@ first column}
 
 \item{stopwords}{Words to exclude from the clustering}
 
+\item{remove_twitter}{Whether to remove text associated with Twitter content, useful for when analyzing data from this source (defaults to FALSE)}
+
 \item{...}{The metadata columns following the text column}
 }
 \description{

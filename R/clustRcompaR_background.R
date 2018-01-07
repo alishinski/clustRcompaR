@@ -13,6 +13,7 @@ process_cutdata <- function(data, corpus, min_terms){
 #'  first column
 #' @param ... The metadata columns following the text column
 #' @param stopwords Words to exclude from the clustering
+#' @inheritParams cluster
 #' @details Puts together the corpus and dfm from the data frame provided
 #' @export
 assemble_corpus <- function(data, stopwords, remove_twitter){
@@ -134,3 +135,17 @@ cluster_text <- function(mat, dev_mat, n_clusters, cleanDFM, num_terms){
   # new output including the kmeans output as well as the most frequent terms
   results = list(clusters = kfit, terms = clusterTerms)
 }
+
+#' data of the inaugural addresses by every United States President (from the quanteda package)
+#'
+#' @source http://docs.quanteda.io/
+#' @format Data frame with columns
+#' #' \describe{
+#'   \item{texts}{text contents of the inaugural addresses}
+#'   \item{Year}{year of the address}
+#'   \item{President}{last name of the President}
+#'   \item{FirstName}{first name of the President}
+#' }
+#' @import tibble
+
+"inaugural_addresses"
