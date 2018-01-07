@@ -29,3 +29,31 @@ Because this package is in development and is not yet available on CRAN, to inst
 * Next, use `compare()` with the output from the `cluster()` function along with a `string` for the factor to compare the frequency of clusters to. 
  
  * This output can be examined and used on its own, or be passed to two functions, `compare_plot()`, which plots the table using [`ggplot2`](https://github.com/hadley/ggplot2), or `compare_test()`, which performs a chi-square test of proportions on the table and indicates across which levels of the factor clusters appear more or less likely than expected.
+ 
+## Example
+ 
+Here is an example using the built-in `inaugural_addresses` dataset (from the quanteda package). This dataset consists of the inaugural addresses by every United States President.
+
+First, we use `cluster()` to cluster the documents into three clusters. We include a new variable, `year_before_1900`, which we will later use to compare frequencies across clusters. Then we use `extract_terms()` to view the terms and term frequencies in the two clusters.
+
+```{r example}
+library(clustRcompaR)
+library(dplyr)
+
+d <- inaugural_addresses
+d <- mutate(d, century = ifelse(Year < 1800, "17th",
+                                ifelse(Year >= 1800 & Year < 1900, "18th",
+                                       ifelse(Year >= 1900 & Year < 2000, "19th", "20th"))))
+
+three_clusters <- cluster(d, century, n_clusters = 3)
+
+extract_terms(three_clusters)
+```
+
+Second, we use the `compare()` function to compare the frequency of clusters across a factor, in this case, the century. We can then use the `compare_plot()` or `compare_test()` (which uses a Chi-Square test) function. 
+
+```{r}
+three_clusters_comparison <- compare(three_clusters, "century")
+
+compare_plot(three_clusters_comparison)
+```

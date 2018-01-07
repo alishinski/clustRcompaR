@@ -136,7 +136,7 @@ cluster_text <- function(mat, dev_mat, n_clusters, cleanDFM, num_terms){
   results = list(clusters = kfit, terms = clusterTerms)
 }
 
-#' data of the inaugural addresses by every United States President (from the quanteda package)
+#' Data on the inaugural addresses by every United States President (from the quanteda package)
 #'
 #' @source http://docs.quanteda.io/
 #' @format Data frame with columns

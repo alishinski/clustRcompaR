@@ -3,7 +3,7 @@
 \docType{data}
 \name{inaugural_addresses}
 \alias{inaugural_addresses}
-\title{data of the inaugural addresses by every United States President (from the quanteda package)}
+\title{Data on the inaugural addresses by every United States President (from the quanteda package)}
 \format{Data frame with columns
 #' \describe{
   \item{texts}{text contents of the inaugural addresses}
@@ -18,6 +18,6 @@ http://docs.quanteda.io/
 inaugural_addresses
 }
 \description{
-data of the inaugural addresses by every United States President (from the quanteda package)
+Data on the inaugural addresses by every United States President (from the quanteda package)
 }
 \keyword{datasets}
