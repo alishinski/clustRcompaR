@@ -134,13 +134,3 @@ cluster_text <- function(mat, dev_mat, n_clusters, cleanDFM, num_terms){
   # new output including the kmeans output as well as the most frequent terms
   results = list(clusters = kfit, terms = clusterTerms)
 }
-
-#' Extracts terms and term frequencies
-#'
-#' @param object output from the cluster() function
-#' @details Extracts the terms and term frequencies from the output of the cluster() function
-#'  @export
-
-extract_terms <- function(object) {
-  object[[1]]$terms
-}

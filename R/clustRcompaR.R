@@ -96,3 +96,12 @@ compare_test <- function(comparison_table){
   results
 }
 
+#' Extracts terms and term frequencies
+#'
+#' @param object output from the cluster() function
+#' @details Extracts the terms and term frequencies from the output of the cluster() function
+#' @export
+
+extract_terms <- function(object) {
+  object[[1]]$terms
+}
