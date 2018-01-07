@@ -2,39 +2,58 @@
 ### clustRcompaR Testing Code ###
 #################################
 
-library(ppls)
-library(quanteda)
-library(ggplot2)
-library(tidyr)
+# library(ppls)
+# library(quanteda)
+# library(ggplot2)
+# library(tidyr)
 devtools::load_all()
 
-#grab the data
-# setwd("/home/alex/Dropbox/clustRcompaR") # Alex
-setwd("~/dropbox/research/clustRcompaR") # Josh
-data <- read.csv("scip_data.csv", header = T)
-cutdata <- data.frame(data$purpose, data$grade, data$teacher, data$time, stringsAsFactors = F)
-cutdata$data.purpose <- as.character(cutdata$data.purpose)
-str(cutdata
+# library(clustRcompaR)
+library(dplyr)
 
-# clustering test
-clusteredDataNew <- cluster(cutdata, data.grade, n_clusters = 5)
-clusteredDataNew[[1]]
-cluster_text
-colSums
-quanteda::colSums
-showMethods("quanteda::colSums")
-#raw clustering output
-clusteredDataNew$cluster$clusters$cluster
-#print output
-clusteredDataNew$cluster$terms
-#compare data frame
-clusteredDataNew$compare
+# inaugural addresses
+d <- inaugural_addresses
+d <- mutate(d, century = ifelse(Year < 1800, "17th",
+                                ifelse(Year >= 1800 & Year < 1900, "18th",
+                                       ifelse(Year >= 1900 & Year < 2000, "19th", "20th"))))
 
-# Compare functions testing
-out <- compare(clusteredDataNew, "data.grade", 1:5, 1:2)
-out
+three_clusters <- cluster(d, n_clusters = 3)
+extract_terms(three_clusters)
+three_clusters_comparison <- compare(three_clusters, "century")
+compare_plot(three_clusters_comparison)
 
-# test testing code
-compare_test(out)
-# test plotting code
-compare_plot(out)
+# scip
+d <- readr::read_csv("scip_data.csv")
+d <- select(d, audience2, everything())
+four_cluster_solution <- cluster(d, n_clusters = 4)
+four_cluster_comparison <- compare(four_cluster_solution, "teacher")
+compare_plot(four_cluster_comparison)
+
+# #grab the data
+# # setwd("/home/alex/Dropbox/clustRcompaR") # Alex
+# # setwd("~/dropbox/research/clustRcompaR") # Josh
+# d <- inaugural_addresses
+# # cutdata <- data.frame(data$purpose, data$grade, data$teacher, data$time, stringsAsFactors = F)
+# # cutdata$data.purpose <- as.character(cutdata$data.purpose)
+#
+# d <- dplyr::mutate(year_before_1900 = ifelse(Year < 1900, 1, 0))
+#
+# # clustering test
+# clusteredDataNew <- cluster(d, year_before_1900, n_clusters = 2)
+# clusteredDataNew[[1]]$terms
+#
+# # #raw clustering output
+# # clusteredDataNew$cluster$clusters$cluster
+# # #print output
+# # clusteredDataNew$cluster$terms
+# # #compare data frame
+# # clusteredDataNew$compare
+#
+# # Compare functions testing
+# out <- compare(clusteredDataNew, "Year", 1:2, )
+# out
+#
+# # test testing code
+# compare_test(out)
+# # test plotting code
+# compare_plot(out)

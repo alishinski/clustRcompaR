@@ -33,10 +33,33 @@ install.packages("clustRcompaR")
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+This is a basic example using the built-in inaugural addressess dataset. 
+
+First, we use `cluster()` to cluster the documents into three clusters. We include a new variable, `year_before_1900`, which we will later use to compare frequencies across clusters. Then we use `extract_terms()` to view the terms and term frequencies in the two clusters.
+
+```{r, eval = F}
+library(clustRcompaR)
+```
+
+```{r, echo = T}
+devtools::load_all(".")
+```
 
 ```{r example}
 library(clustRcompaR)
+library(dplyr)
 
+d <- inaugural_addresses
+d <- mutate(d, century = ifelse(Year < 1800, "17th",
+                                ifelse(Year >= 1800 & Year < 1900, "18th",
+                                       ifelse(Year >= 1900 & Year < 2000, "19th", "20th"))))
 
+three_clusters <- cluster(d, century, n_clusters = 3)
+
+extract_terms(three_clusters)
+```
+
+```{r}
+three_clusters_comparison <- compare(three_clusters, "century")
+compare_plot(three_clusters_comparison)
 ```

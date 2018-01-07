@@ -4,7 +4,7 @@
 \alias{assemble_corpus}
 \title{First corpus building function}
 \usage{
-assemble_corpus(data, stopwords)
+assemble_corpus(data, stopwords, remove_twitter)
 }
 \arguments{
 \item{data}{The data from which the corpus is drawn with documents in

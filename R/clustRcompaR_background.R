@@ -15,11 +15,11 @@ process_cutdata <- function(data, corpus, min_terms){
 #' @param stopwords Words to exclude from the clustering
 #' @details Puts together the corpus and dfm from the data frame provided
 #' @export
-assemble_corpus <- function(data, stopwords){
+assemble_corpus <- function(data, stopwords, remove_twitter){
   data <- data.frame(data, stringsAsFactors = F)
   corpus_frame <- dplyr::select(data, dplyr::everything())
   text_vector <- as.character(corpus_frame[,1])
-  dfm <- quanteda::dfm(text_vector, removeTwitter = T, stem = T, ignoredFeatures = stopwords)
+  dfm <- quanteda::dfm(text_vector, remove_twitter = remove_twitter, stem = TRUE, remove = stopwords, remove_punct = TRUE)
   a_corp <- quanteda::corpus(text_vector)
   quanteda::metadoc(a_corp) <- corpus_frame[,2:ncol(corpus_frame)]
   results = list(Corpus = a_corp, DFM = dfm)
@@ -44,7 +44,7 @@ clean_dfm <- function(corp, minimum_term_frequency, min_terms){
 
 # calculates vector projections
 vect_project <- function(a,b){
-  project <- crossprod(a,b) * b
+  project <- suppressWarnings(crossprod(a,b) * b)
   project
 }
 
@@ -133,4 +133,14 @@ cluster_text <- function(mat, dev_mat, n_clusters, cleanDFM, num_terms){
   row.names(clusterTerms) <- NULL
   # new output including the kmeans output as well as the most frequent terms
   results = list(clusters = kfit, terms = clusterTerms)
+}
+
+#' Extracts terms and term frequencies
+#'
+#' @param object output from the cluster() function
+#' @details Extracts the terms and term frequencies from the output of the cluster() function
+#'  @export
+
+extract_terms <- function(object) {
+  object[[1]]$terms
 }

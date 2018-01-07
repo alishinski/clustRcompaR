@@ -4,7 +4,8 @@
 \alias{compare}
 \title{Compare wrapper function}
 \usage{
-compare(clustering_solution, compare_which, which_clusters, which_groups)
+compare(clustering_solution, compare_which, which_clusters = NULL,
+  which_groups = NULL)
 }
 \arguments{
 \item{clustering_solution}{The output from the \code{cluster} function.}

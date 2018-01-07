@@ -5,7 +5,7 @@
 \title{Cluster wrapper function}
 \usage{
 cluster(data, ..., n_clusters, minimum_term_frequency = 3, min_terms = 3,
-  num_terms = 10, stopwords = NULL)
+  num_terms = 10, stopwords = NULL, remove_twitter = FALSE)
 }
 \arguments{
 \item{data}{The data frame comparing the text vector as the first column}
@@ -21,6 +21,8 @@ cluster(data, ..., n_clusters, minimum_term_frequency = 3, min_terms = 3,
 \item{num_terms}{Number of terms to display in clustering summary output}
 
 \item{stopwords}{Additional stopwords to exclude from clustering analysis}
+
+\item{remove_twitter}{Whether to remove text associated with Twitter content, useful for when analyzing data from this source (defaults to FALSE)}
 }
 \description{
 Cluster wrapper function
