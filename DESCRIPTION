@@ -6,15 +6,18 @@ Version: 0.2.0
 Date: 2017-01-06
 Author: Joshua Rosenberg, Alex Lishinski
 Maintainer: Alex Lishinski <alexlishinski@gmail.com>
-Description: Provides an interface to perform cluster analysis on a corpus of text. Interfaces to 
-    Quanteda to assemble text corpuses easily. Deviationalizes text vectors prior to clustering 
-    using technique described by Sherin (Sherin, B. [2013]. A computational study of commonsense science: 
-    An exploration in the automated analysis of clinical interview data. Journal of the Learning Sciences, 
-    22(4), 600-638. Chicago. http://dx.doi.org/10.1080/10508406.2013.836654). Uses cosine similarity as distance
-    metric for two stage clustering process, involving Ward's algorithm hierarchical agglomerative clustering, 
-    and k-means clustering. Selects optimal number of clusters to maximize "variance explained" by clusters, 
-    adjusted by the number of clusters. Provides plotted output of clustering results as well as printed output. 
-    Assesses "model fit" of clustering solution to a set of preexisting groups in dataset.
+Description: Provides an interface to perform cluster analysis on a corpus of
+    text. Interfaces to Quanteda to assemble text corpuses easily. Deviationalizes
+    text vectors prior to clustering using technique described by Sherin (Sherin,
+    B. [2013]. A computational study of commonsense science: An exploration in the
+    automated analysis of clinical interview data. Journal of the Learning Sciences,
+    22(4), 600-638. Chicago. http://dx.doi.org/10.1080/10508406.2013.836654). Uses
+    cosine similarity as distance metric for two stage clustering process, involving
+    Ward's algorithm hierarchical agglomerative clustering, and k-means clustering.
+    Selects optimal number of clusters to maximize "variance explained" by clusters,
+    adjusted by the number of clusters. Provides plotted output of clustering
+    results as well as printed output. Assesses "model fit" of clustering solution
+    to a set of preexisting groups in dataset.
 License: GPL-3
 Depends:
     R (>= 3.1.3),
@@ -29,6 +32,7 @@ Imports:
 VignetteBuilder: knitr
 Suggests:
     knitr,
-    rmarkdown
-RoxygenNote: 6.0.1
+    rmarkdown,
+    testthat
+RoxygenNote: 5.0.1
 LazyData: true

@@ -39,6 +39,7 @@ First, we use `cluster()` to cluster the documents into three clusters. We inclu
 ```{r example}
 library(clustRcompaR)
 library(dplyr)
+library(quanteda)
 
 d <- inaugural_addresses
 d <- mutate(d, century = ifelse(Year < 1800, "17th",
