@@ -53,7 +53,7 @@ extract_terms(three_clusters)
 
 Second, we use the `compare()` function to compare the frequency of clusters across a factor, in this case, the century. We can then use the `compare_plot()` or `compare_test()` (which uses a Chi-Square test) function. 
 
-```{r}
+```{r, example-p2}
 three_clusters_comparison <- compare(three_clusters, "century")
 
 compare_plot(three_clusters_comparison)

@@ -1,0 +1,41 @@
+---
+title: "clustRcompaR"
+author: "Joshua Rosenberg"
+date: "1/11/2018"
+output: html_document
+---
+
+```{r setup}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, example1}
+library(clustRcompaR)
+library(dplyr)
+
+# inaugural addresses
+d <- inaugural_addresses
+d <- mutate(d, century = ifelse(Year < 1800, "17th",
+                                ifelse(Year >= 1800 & Year < 1900, "18th",
+                                       ifelse(Year >= 1900 & Year < 2000, "19th", "20th"))))
+
+three_clusters <- cluster(d, n_clusters = 3)
+extract_terms(three_clusters)
+three_clusters_comparison <- compare(three_clusters, "century")
+compare_plot(three_clusters_comparison)
+compare_test(three_clusters_comparison)
+```
+
+```{r, example2}
+d <- readr::read_csv("../scip_data.csv")
+d <- select(d, audience2, everything())
+four_cluster_solution <- cluster(d, n_clusters = 4)
+four_cluster_comparison <- compare(four_cluster_solution, "teacher")
+compare_plot(four_cluster_comparison)
+compare_test(four_cluster_comparison)
+```
+
+```{r}
+sessionInfo()
+save.image("1-11-2018.Rdata")
+```
