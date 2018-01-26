@@ -3,7 +3,7 @@
 #'@param data The data frame comparing the text vector as the first column
 #'@param ... Additional columns of the data frame containing metadata cfor comparison
 #'@param n_clusters The number of clusters to be used for the clustering solution
-#'@param minimum_term_frequency The minimum number of occurances for a term to be included
+#'@param minimum_term_frequency The minimum number of occurences for a term to be included
 #'@param min_terms The minimum number of terms for a document to be included
 #'@param num_terms Number of terms to display in clustering summary output
 #'@param stopwords Additional stopwords to exclude from clustering analysis

@@ -14,7 +14,7 @@ cluster(data, ..., n_clusters, minimum_term_frequency = 3, min_terms = 3,
 
 \item{n_clusters}{The number of clusters to be used for the clustering solution}
 
-\item{minimum_term_frequency}{The minimum number of occurances for a term to be included}
+\item{minimum_term_frequency}{The minimum number of occurences for a term to be included}
 
 \item{min_terms}{The minimum number of terms for a document to be included}
 
