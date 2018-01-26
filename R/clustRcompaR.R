@@ -10,6 +10,21 @@
 #'@param remove_twitter Whether to remove text associated with Twitter content, useful for when analyzing data from this source (defaults to FALSE)
 #'@details Performs the clustering half of the process, including assembling
 #'  and cleaning the corpus, deviationalizing and clustering.
+#'@examples
+#' library(clustRcompaR)
+#' library(dplyr)
+#' library(quanteda)
+#'
+#' d <- inaugural_addresses
+#' d <- mutate(d, century = ifelse(Year < 1800, "17th",
+#'                                 ifelse(Year >= 1800 & Year < 1900, "18th",
+#'                                        ifelse(Year >= 1900 & Year < 2000, "19th", "20th"))))
+#'
+#' three_clusters <- cluster(d, century, n_clusters = 3)
+#' extract_terms(three_clusters)
+#'
+#' three_clusters_comparison <- compare(three_clusters, "century")
+#' compare_plot(three_clusters_comparison)
 #'@export
 
 cluster <- function(data, ..., n_clusters, minimum_term_frequency = 3, min_terms = 3, num_terms = 10, stopwords = NULL, remove_twitter = FALSE){
@@ -41,7 +56,23 @@ cluster <- function(data, ..., n_clusters, minimum_term_frequency = 3, min_terms
 #' @param which_groups Levels of the grouping factor to be included in the comparison. Default is all levels.
 #'
 #' @details Function for comparing clustering solution between subgroups.  Output is contingency table for the specified groups and clusters.
+#' @examples
+#' library(clustRcompaR)
+#' library(dplyr)
+#' library(quanteda)
+#'
+#' d <- inaugural_addresses
+#' d <- mutate(d, century = ifelse(Year < 1800, "17th",
+#'                                 ifelse(Year >= 1800 & Year < 1900, "18th",
+#'                                        ifelse(Year >= 1900 & Year < 2000, "19th", "20th"))))
+#'
+#' three_clusters <- cluster(d, century, n_clusters = 3)
+#' extract_terms(three_clusters)
+#'
+#' three_clusters_comparison <- compare(three_clusters, "century")
+#' compare_plot(three_clusters_comparison)
 #' @export
+
 compare <- function(clustering_solution, compare_which, which_clusters = NULL, which_groups = NULL){
   # Compare specified groups based on cluster frequencies
   # chi square differences for the groups

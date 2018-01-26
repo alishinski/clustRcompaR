@@ -3,11 +3,8 @@ Type: Package
 Title: Easy Interface for Clustering a Set of Documents and Exploring Group-
     Based Patterns
 Version: 0.2.0
-Date: 2018-01-25
-Authors@R: c(
-    person("Joshua", "Rosenberg", role = "cre", email = "jmichaelrosenberg@gmail.com"),
-    person("Alex", "Lishinski", role = c("aut", "cre"), email = "alexlishinski@gmail.com")
-    )
+Date: 2018-01-23
+Author: Joshua Rosenberg, Alex Lishinski
 Maintainer: Alex Lishinski <alexlishinski@gmail.com>
 Description: Provides an interface to perform cluster analysis on a corpus of
     text. Interfaces to Quanteda to assemble text corpuses easily. Deviationalizes
