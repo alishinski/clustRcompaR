@@ -18,4 +18,3 @@ Turns term vectors into deviation vectors.  This turns the
  the centroid, rather than its absolute direction.
  @export
 }
-

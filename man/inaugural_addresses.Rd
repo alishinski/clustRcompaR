@@ -21,4 +21,3 @@ inaugural_addresses
 Data on the inaugural addresses by every United States President (from the quanteda package)
 }
 \keyword{datasets}
-

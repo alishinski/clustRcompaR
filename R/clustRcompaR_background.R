@@ -29,7 +29,7 @@ assemble_corpus <- function(data, stopwords, remove_twitter){
 
 #' Cleans the DFM based on specified term minimums
 #'
-#' @param corp A corpus opject as created by \code{assemble_corpus}.
+#' @param corp A corpus object as created by \code{assemble_corpus}.
 #' @param minimum_term_frequency Minimum number of occurances for a term to be used
 #' @param min_terms Minimum number of terms for document to be used
 #' @details Removes terms and documents that don't meet term and doc minimums

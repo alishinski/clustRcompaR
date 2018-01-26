@@ -7,7 +7,7 @@
 clean_dfm(corp, minimum_term_frequency, min_terms)
 }
 \arguments{
-\item{corp}{A corpus opject as created by \code{assemble_corpus}.}
+\item{corp}{A corpus object as created by \code{assemble_corpus}.}
 
 \item{minimum_term_frequency}{Minimum number of occurances for a term to be used}
 
@@ -19,4 +19,3 @@ Cleans the DFM based on specified term minimums
 \details{
 Removes terms and documents that don't meet term and doc minimums
 }
-

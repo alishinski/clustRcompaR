@@ -15,4 +15,3 @@ Extracts terms and term frequencies
 \details{
 Extracts the terms and term frequencies from the output of the cluster() function
 }
-
