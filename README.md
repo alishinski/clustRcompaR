@@ -81,4 +81,4 @@ three_clusters_comparison <- compare(three_clusters, "century")
 compare_plot(three_clusters_comparison)
 ```
 
-<img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
+![](man/figures/README-unnamed-chunk-2-1.png)
