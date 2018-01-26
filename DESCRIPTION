@@ -5,7 +5,7 @@ Title: Easy Interface for Clustering a Set of Documents and Exploring Group-
 Version: 0.2.0
 Date: 2018-01-25
 Authors@R: c(
-    person("Joshua", "Rosenberg", role = c("aut", "cre"), email = "jmichaelrosenberg@gmail.com"),
+    person("Joshua", "Rosenberg", role = "cre", email = "jmichaelrosenberg@gmail.com"),
     person("Alex", "Lishinski", role = c("aut", "cre"), email = "alexlishinski@gmail.com")
     )
 Maintainer: Alex Lishinski <alexlishinski@gmail.com>
