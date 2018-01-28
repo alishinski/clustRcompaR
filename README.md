@@ -28,6 +28,8 @@ This is a basic example using the built-in inaugural addressess dataset.
 
 First, we use `cluster()` to cluster the documents into three clusters. We include a new variable, `year_before_1900`, which we will later use to compare frequencies across clusters. Then we use `extract_terms()` to view the terms and term frequencies in the two clusters.
 
+First, let's process the texts.
+
 ``` r
 library(clustRcompaR)
 library(dplyr)
@@ -44,7 +46,11 @@ d <- inaugural_addresses
 d <- mutate(d, century = ifelse(Year < 1800, "17th",
                                 ifelse(Year >= 1800 & Year < 1900, "18th",
                                        ifelse(Year >= 1900 & Year < 2000, "19th", "20th"))))
+```
 
+Next, we **cluster** the texts.
+
+``` r
 three_clusters <- cluster(d, century, n_clusters = 3)
 #> Document-feature matrix of: 58 documents, 2,820 features (79.6% sparse).
 extract_terms(three_clusters)
@@ -72,7 +78,9 @@ extract_terms(three_clusters)
 #> 10                   14.41176              no                   7.192308
 ```
 
-Second, we use the `compare()` function to compare the frequency of clusters across a factor, in this case, the century. We can then use the `compare_plot()` or `compare_test()` (which uses a Chi-Square test) function.
+Then, we use the `compare()` function to compare the frequency of clusters across a factor, in this case, the century. We can then use the `compare_plot()` or `compare_test()` (which uses a Chi-Square test) function.
+
+Here, we can **compare** the texts.
 
 ``` r
 three_clusters_comparison <- compare(three_clusters, "century")
