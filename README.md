@@ -47,7 +47,6 @@ d <- mutate(d, century = ifelse(Year < 1800, "17th",
 
 three_clusters <- cluster(d, century, n_clusters = 3)
 #> Document-feature matrix of: 58 documents, 2,820 features (79.6% sparse).
-
 extract_terms(three_clusters)
 #>    Cluster.1.Terms Cluster.1.Term.Frequencies Cluster.2.Terms
 #> 1               in                  34.200000              in
@@ -77,7 +76,6 @@ Second, we use the `compare()` function to compare the frequency of clusters acr
 
 ``` r
 three_clusters_comparison <- compare(three_clusters, "century")
-
 compare_plot(three_clusters_comparison)
 ```
 

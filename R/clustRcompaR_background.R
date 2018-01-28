@@ -146,6 +146,5 @@ cluster_text <- function(mat, dev_mat, n_clusters, cleanDFM, num_terms){
 #'   \item{President}{last name of the President}
 #'   \item{FirstName}{first name of the President}
 #' }
-#' @import tibble
 
 "inaugural_addresses"
