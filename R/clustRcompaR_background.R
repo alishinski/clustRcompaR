@@ -49,14 +49,19 @@ vect_project <- function(a,b){
   project
 }
 
+# normalize vectors
+normalize.vector <- function(v){
+  v/sqrt(sum(v^2))
+}
+
 # calculates deviation vectors
 dev_vector <- function(vect_list){
-  norm_vects <- lapply(vect_list, ppls::normalize.vector)
+  norm_vects <- lapply(vect_list, normalize.vector)
   sum_vect <- colSums(do.call(rbind, norm_vects))
-  norm_sum <- ppls::normalize.vector(sum_vect)
+  norm_sum <- normalize.vector(sum_vect)
   projects <- lapply(norm_vects, vect_project, norm_sum)
   difference <- mapply('-', norm_vects, projects)
-  dev_vects <-  apply(difference, MARGIN = 2, FUN = ppls::normalize.vector)
+  dev_vects <-  apply(difference, MARGIN = 2, FUN = normalize.vector)
   dev_vects
 }
 

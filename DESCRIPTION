@@ -2,11 +2,11 @@ Package: clustRcompaR
 Type: Package
 Title: Easy Interface for Clustering a Set of Documents and Exploring Group-
     Based Patterns
-Version: 0.2.0
-Date: 2018-01-23
+Version: 0.2.1
+Date: 2018-07-12
 Authors@R: c(
-    person(c("Joshua", "M"), "Rosenberg", role = "aut", email = "jmichaelrosenberg@gmail.com"),
-    person(c("Alex"), "Lishinski", role = "aut", email = "alexlishinski@gmail.com"))
+    person(c("Joshua", "M"), "Rosenberg", role = c("cre", "aut"), email = "jmichaelrosenberg@gmail.com"),
+    person(c("Alex"), "Lishinski", role = "aut", email = "alexlishinski@gmail.com")
     )
 Maintainer: Alex Lishinski <alexlishinski@gmail.com>
 Description: Provides an interface to perform cluster analysis on a corpus of
